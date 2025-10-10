@@ -1,0 +1,24 @@
+{
+  "name": "csdn",
+  "version": "1.0.0",
+  "main": "csdn.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.7.1",
+    "chalk": "^5.6.2"
+  },
+  "dependencies": {
+    "@types/md5": "^2.3.5",
+    "axios": "^1.12.2",
+    "crypto-js": "^4.2.0",
+    "md": "^0.6.0",
+    "md5": "^2.3.0",
+    "qiniu": "^7.14.0"
+  }
+}

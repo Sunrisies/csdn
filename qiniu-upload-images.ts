@@ -92,18 +92,12 @@ const doUpload = (key, file) => {
     const putExtra = new qiniu.form_up.PutExtra();
     const putPolicy = new qiniu.rs.PutPolicy(options);
     const uploadToken = putPolicy.uploadToken(mac);
-    console.log(chalk.blue(`上传凭证：${uploadToken}`))
-    console.log(chalk.blue(`文件名：${key}`))
-
-    console.log(chalk.blue(`文件路径：${file}`))
-    console.log(chalk.blue(`上传空间：${bucket}`))
-    console.log(putExtra, 'putExtra')
     return new Promise((resolve, reject) => {
         formUploader.putFile(uploadToken, key, file, putExtra, (err, body, info) => {
             if (err) {
                 reject(err);
             }
-            console.log(body, 'body');
+            // console.log(body, 'body');
             if (info.statusCode === 200) {
                 resolve(body);
             } else {
@@ -134,9 +128,9 @@ export async function uploadImages(urls: string[]) {
             const key = path.basename(local);
             console.log(key, '图片上传');
             await doUpload(key, local);
-            // const cdnUrl = `http://t3wothpyb.hn-bkt.clouddn.com/${key}`; // 换成你的域名
-            // mapping[url] = cdnUrl;
-            // console.log(chalk.green(`✓ 上传完成：${url} -> ${cdnUrl}`));
+            const cdnUrl = `http://t3wothpyb.hn-bkt.clouddn.com/${key}`; // 换成你的域名
+            mapping[url] = cdnUrl;
+            console.log(chalk.green(`✓ 上传完成：${url} -> ${cdnUrl}`));
         }
 
         // 4. 写出映射

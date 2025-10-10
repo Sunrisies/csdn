@@ -157,7 +157,8 @@ async function getArticleDetail(id) {
     console.error('请求失败:', error.response?.data || error.message);
   }
 }
-
+const tmpDir = path.join(__dirname, 'list');
+fs.mkdirSync(tmpDir, { recursive: true });
 let index = 0
 async function main() {
   async function migrateArticles() {

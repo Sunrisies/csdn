@@ -9,6 +9,8 @@ const path = require('node:path');
 //     const reg = /https:\/\/i-blog\.csdnimg\.cn\/[^"'\s)]*\.(?:jpe?g|png|webp|gif)(?=\s*[\)"'\]>\n]|$)/gi;
 //     return text.match(reg) ?? [];
 // }
+const tmpDir = path.join(__dirname, 'data');
+fs1.mkdirSync(tmpDir, { recursive: true });
 function extractAllImageUrls(content: string): string[] {
     // 综合正则，匹配多种图片格式
     const comprehensiveRegex = /(?:!\[.*?\]\((https?:\/\/[^\s)]+)\)|<img[^>]*src=["'](https?:\/\/[^"']+)["'][^>]*>|src=["'](https?:\/\/[^"']+)["'])/gi;
@@ -54,39 +56,36 @@ const readCsdnList = () => {
     // })
     let images: string[] = [];
     let files = fs1.readdirSync('./list');
-    for (let file of files) {
-        let s = '140834870.json'
-        const data = fs1.readFileSync(`./list/${file}`, 'utf8')
-        // console.log(data, '开始处理');
-        images.push(...extractAllImageUrls(data))
-        let ms = extractAllImageUrls(data)
-        if (ms.length > 0) {
-            index++
-            // console.log(ms, '总图片数量', file);
-        }
+    // for (let file of files) {
+    //     let s = '140834870.json'
+    //     const data = fs1.readFileSync(`./list/${file}`, 'utf8')
+    //     // console.log(data, '开始处理');
+    //     images.push(...extractAllImageUrls(data))
+    //     let ms = extractAllImageUrls(data)
 
-        // const list = JSON.parse(data);
-        // 写一个zhenge
-        // const { markdowncontent } = JSON.parse(data);
-        // console.log(list, '开始处理');
-        // const imgRegex = /!\[.*?\]\((.*?)\)/g;
-        // const imgMatches = markdowncontent.match(imgRegex);
-        // if (imgMatches) {
-        //     // 提取图片链接
-        //     const imgLinks = imgMatches.map(match => {
-        //         const imgLink = match.match(/\((.*?)\)/);
-        //         return imgLink && imgLink[1];
-        //     }).filter(link => link);
-        //     const ls = await readImage(imgLinks, data, file);
-        //     const filePath = path.join(__dirname, `./data3/${file}`);
-        //     fs1.writeFileSync(filePath, ls);
+    // }
+    const imagesMap = JSON.parse(fs1.readFileSync('./imagesMap.json', 'utf8'));
+    for (let file of files) {
+        const data = fs1.readFileSync(`./list/${file}`, 'utf8')
+        // 读取imagesMap.json文件
+        // console.log(imagesMap, 'imagesMap');
+        // for (let key in imagesMap) {
+        //     console.log(imagesMap[key], 'key')
+        //     let data1 = data.replaceAll(key, imagesMap[key])
+        //     console.log(data1, '替换成功')
+        //     // 写入到新的文件中
+        //     fs1.writeFileSync(`./data/${file}`, data1);
         // }
+        const replacedData = Object.entries(imagesMap).reduce((acc, [key, value]) => {
+            return acc.replaceAll(key, value);
+        }, data);
+        fs1.writeFileSync(`./data/${file}`, replacedData);
     }
     // console.log(index, images.length, '总文件数量');
-    if (images.length > 0) {
-        // console.log(images, '总图片数量');
-        uploadImages(images);
-    }
+    // if (images.length > 0) {
+    //     // console.log(images, '总图片数量');
+    //     uploadImages(images);
+    // }
 
 
 }

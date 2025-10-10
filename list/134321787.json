@@ -1,0 +1,12 @@
+{
+  "article_id": "134321787",
+  "title": "自动切换node版本",
+  "description": "在写一下demo的时候，遇到了经常要切换node版本的问题。",
+  "content": "<p>在写一下demo的时候，遇到了经常要切换node版本的问题</p>\n<ul>\n<li>解决方法</li>\n<li>在vscode里面安装vsc-nvm</li>\n<li><img src=\"https://i-blog.csdnimg.cn/blog_migrate/daf0f759db8ee9c995f8bb6732651074.png\" alt=\"在这里插入图片描述\"><br>\n在文件夹下面写.nvmrc<br>\n里面写需要使用node版本号<br>\n<img src=\"https://i-blog.csdnimg.cn/blog_migrate/6026cc23153226146bfc35f479a75a12.png\" alt=\"在这里插入图片描述\"></li>\n</ul>\n\n",
+  "markdowncontent": "在写一下demo的时候，遇到了经常要切换node版本的问题\n- 解决方法\n- 在vscode里面安装vsc-nvm\n- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/daf0f759db8ee9c995f8bb6732651074.png)\n在文件夹下面写.nvmrc\n里面写需要使用node版本号\n![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6026cc23153226146bfc35f479a75a12.png)\n\n\n",
+  "tags": "学习方法",
+  "categories": "default",
+  "type": "original",
+  "status": 1,
+  "created_at": "2023-11-09 22:19:28"
+}

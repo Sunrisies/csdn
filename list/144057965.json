@@ -1,0 +1,12 @@
+{
+  "article_id": "144057965",
+  "title": "tauri托盘的扩展",
+  "description": "tauri托盘的扩展",
+  "content": "<ul>\n<li>rust<br>\n<img src=\"https://img-blog.csdnimg.cn/img_convert/6103197366f3778d31229bae7ed0c9ce.png\" alt=\"alt text\"></li>\n<li>使用vue去监听鼠标是否悬浮到托盘上面，如果渲染就显示tray组件<br>\n<img src=\"https://img-blog.csdnimg.cn/img_convert/b35cda9bd126dd133660e45df75779c8.png\" alt=\"alt text\"></li>\n<li>tray组件的样式<br>\n<img src=\"https://img-blog.csdnimg.cn/img_convert/630ac235f3e4c874c373907707d05b5f.png\" alt=\"alt text\"></li>\n<li>最后的效果<br>\n<img src=\"https://img-blog.csdnimg.cn/img_convert/636d64ba34720d23e654c3ba39f945b1.png\" alt=\"alt text\"></li>\n</ul>\n\n",
+  "markdowncontent": "- rust\n![alt text](https://img-blog.csdnimg.cn/img_convert/6103197366f3778d31229bae7ed0c9ce.png)\n- 使用vue去监听鼠标是否悬浮到托盘上面，如果渲染就显示tray组件\n![alt text](https://img-blog.csdnimg.cn/img_convert/b35cda9bd126dd133660e45df75779c8.png)\n- tray组件的样式\n![alt text](https://img-blog.csdnimg.cn/img_convert/630ac235f3e4c874c373907707d05b5f.png)\n- 最后的效果\n![alt text](https://img-blog.csdnimg.cn/img_convert/636d64ba34720d23e654c3ba39f945b1.png)\n",
+  "tags": "rust,javascript",
+  "categories": "tauri",
+  "type": "original",
+  "status": 1,
+  "created_at": "2024-11-27 08:33:29"
+}

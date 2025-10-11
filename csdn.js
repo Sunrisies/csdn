@@ -2,6 +2,7 @@ const axios = require('axios');
 const CryptoJS = require('crypto-js');
 const fs = require('node:fs');
 const path = require('node:path');
+const { json } = require('node:stream/consumers');
 // 过滤特定请求头部
 const filterHeaders = (headers) => {
   const filteredHeaders = {};
@@ -152,6 +153,7 @@ async function getArticleDetail(id) {
         headers: requestHeaders
       }
     );
+    console.log('获取文章详情成功:', response.data);
     return response.data.data;
   } catch (error) {
     console.error('请求失败:', error.response?.data || error.message);
@@ -192,9 +194,9 @@ async function main() {
           }
           console.log("插入数据:", insertData);
           // 写入到一个json文件
-          const jsonData = JSON.stringify(insertData, null, 2);
-          const filePath = path.join(__dirname, `./list/${id}.json`);
-          fs.writeFileSync(filePath, jsonData);
+          // const jsonData = JSON.stringify(insertData, null, 2);
+          // const filePath = path.join(__dirname, `./list/${id}.json`);
+          // fs.writeFileSync(filePath, jsonData);
 
           // 执行插入
           // const [result] = await connection.query(
@@ -228,6 +230,65 @@ async function main() {
       process.exit(1);
     });
 }
+// https://bizapi.csdn.net/blog/phoenix/console/v1/article/list?page=2&status=all_v3&pageSize=20
+async function phoenixGetArticles() {
+  const nonce = generateNonce();
+
+  const apiConfig = {
+    method: 'GET',
+    url: 'https://bizapi.csdn.net/blog/phoenix/console/v1/article/list',
+    appSecret: '9znpamsyl2c7cdrr9sas0le9vbc3r6ba',
+    accept: 'application/json, text/plain, */*',
+    date: '',
+    contentType: '',
+    params: {
+      pageSize: 100,
+      status: "all_v2",
+    },
+    headers: {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "",
+      "X-Ca-Key": "203803574",
+      'X-Ca-Nonce': nonce
+    }
+  };
+  const signature = generateSignature(apiConfig);
+  console.log(signature, apiConfig.headers['X-Ca-Key'], nonce, '=============');
+  const requestHeaders = {
+    'cookie': ` UserName=weixin_63115449; UserToken=a30f92b3a8e6479aa46f76d385bab8bc; UserNick=%E6%9C%9D%E9%98%B3581;___`, // 需替换有效cookie
+    'x-ca-key': "203803574",
+    'x-ca-nonce': nonce,
+    'x-ca-signature': signature, // 需要获取实际签名密钥
+    "x-ca-signature-headers": "x-ca-key,x-ca-nonce",
+  };
+  try {
+    const response = await axios.get(
+      `https://bizapi.csdn.net/blog/phoenix/console/v1/article/list?status=all_v2&pageSize=100`,
+      {
+        headers: requestHeaders
+      }
+    );
+    // console.log('获取文章详情成功:', response.data.data);
+    let data = response.data.data
+    for (let item of data.list) {
+      console.log(item);
+      // 去加载本地的文章详情，当articleId跟文件名称一样的话，把这个数据也写进入去
+      const filePath = path.join(__dirname, `./data/${item.articleId}.json`);
+      if (fs.existsSync(filePath)) {
+        const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        console.log('找到本地文章详情:', jsonData);
+        let newJsonData = { ...jsonData, ...item }
+        const newFilePath = path.join(__dirname, `./list1/${item.articleId}.json`);
+        fs.writeFileSync(newFilePath, JSON.stringify(newJsonData, null, 2));
+        console.log('写入新文件:', newFilePath);
 
 
-main().catch(console.error);
+      }
+    }
+    return response.data.data;
+  } catch (error) {
+    console.error('请求失败:', error.response || error.message);
+  }
+}
+phoenixGetArticles()
+// main().catch(console.error);

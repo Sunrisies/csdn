@@ -36,6 +36,11 @@ const pool = new Pool();
         await pool.end();
     }
 })();
+const nowBJ = () => {
+    const d = new Date();
+    d.setHours(d.getHours() + 8);
+    return d.toISOString(); // 仍是 ISO 格式，但时间已是北京时间
+};
 
 /* ======  单篇文章处理  ====== */
 async function importOneArticle(client, art) {
@@ -97,8 +102,8 @@ async function importOneArticle(client, art) {
     } else {
         // 插入新文章 - 使用 article_id 作为 UUID
         const postRes = await client.query(
-            `INSERT INTO posts(uuid, author_id, category_id, title, summary, content,markdowncontent, status, published_at, created_at, updated_at,view_count)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11,$12)
+            `INSERT INTO posts(uuid, author_id, category_id, title, summary, content,markdowncontent, status, published_at, created_at, updated_at,view_count,size,cover_image)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11,$12,$13,$14)
              RETURNING id`,
             [
                 uuidv4(), // 使用 article_id 作为 UUID
@@ -112,7 +117,9 @@ async function importOneArticle(client, art) {
                 art.created_at,
                 art.created_at,
                 art.created_at,
-                art.viewCount
+                art.viewCount,
+                art.markdowncontent.length,
+                "https://vip.sunrise1024.top/uploads/2025/10/13/maple-6678635.jpg"
             ]
         );
         postId = postRes.rows[0].id;

@@ -72,7 +72,7 @@ async function fetchCSDNArticles() {
     contentType: '',
     params: {
       page: 1,
-      pageSize: 100,
+      pageSize: 20,
       status: "all_v2"
     },
     headers: {
@@ -194,9 +194,9 @@ async function main() {
           }
           console.log("插入数据:", insertData);
           // 写入到一个json文件
-          // const jsonData = JSON.stringify(insertData, null, 2);
-          // const filePath = path.join(__dirname, `./list/${id}.json`);
-          // fs.writeFileSync(filePath, jsonData);
+          const jsonData = JSON.stringify(insertData, null, 2);
+          const filePath = path.join(__dirname, `./list/${id}.json`);
+          fs.writeFileSync(filePath, jsonData);
 
           // 执行插入
           // const [result] = await connection.query(
@@ -242,7 +242,7 @@ async function phoenixGetArticles() {
     date: '',
     contentType: '',
     params: {
-      pageSize: 100,
+      pageSize: 20,
       status: "all_v2",
     },
     headers: {
@@ -263,26 +263,25 @@ async function phoenixGetArticles() {
   };
   try {
     const response = await axios.get(
-      `https://bizapi.csdn.net/blog/phoenix/console/v1/article/list?status=all_v2&pageSize=100`,
+      `https://bizapi.csdn.net/blog/phoenix/console/v1/article/list?status=all_v2&pageSize=20`,
       {
         headers: requestHeaders
       }
     );
     // console.log('获取文章详情成功:', response.data.data);
     let data = response.data.data
+    console.log(data, '---')
     for (let item of data.list) {
-      console.log(item);
+
       // 去加载本地的文章详情，当articleId跟文件名称一样的话，把这个数据也写进入去
-      const filePath = path.join(__dirname, `./data/${item.articleId}.json`);
+      const filePath = path.join(__dirname, `./list/${item.articleId}.json`);
       if (fs.existsSync(filePath)) {
         const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         console.log('找到本地文章详情:', jsonData);
         let newJsonData = { ...jsonData, ...item }
-        const newFilePath = path.join(__dirname, `./list1/${item.articleId}.json`);
+        const newFilePath = path.join(__dirname, `./list2/${item.articleId}.json`);
         fs.writeFileSync(newFilePath, JSON.stringify(newJsonData, null, 2));
         console.log('写入新文件:', newFilePath);
-
-
       }
     }
     return response.data.data;
